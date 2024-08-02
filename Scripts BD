@@ -1,0 +1,57 @@
+create database postgres
+    with owner admin;
+
+comment on database postgres is 'default administrative connection database';
+
+create sequence public.insured_id_seq
+    as integer;
+
+alter sequence public.insured_id_seq owner to admin;
+
+create table public.insured
+(
+    id                    bigint default nextval('insured_id_seq'::regclass) not null
+        primary key,
+    identification_type   integer
+        constraint insured_identification_type_check
+            check (identification_type = ANY (ARRAY [1, 2])),
+    identification_number varchar(255)                                       not null,
+    surnames              varchar(255)                                       not null,
+    names                 varchar(255)                                       not null,
+    gender                integer                                            not null
+        constraint insured_gender_check
+            check (gender = ANY (ARRAY [1, 2])),
+    birth_date            date                                               not null
+);
+
+alter table public.insured
+    owner to admin;
+
+alter sequence public.insured_id_seq owned by public.insured.id;
+
+create table public.protections
+(
+    code integer      not null
+        primary key,
+    name varchar(255) not null
+);
+
+alter table public.protections
+    owner to admin;
+
+create table public.premium
+(
+    code_protections   integer          not null
+        references public.protections,
+    minimum_age        integer          not null,
+    maximum_age        integer          not null,
+    premium_percentage double precision not null
+        constraint premium_premium_percentage_check
+            check ((premium_percentage >= ((0)::numeric)::double precision) AND
+                   (premium_percentage <= ((1)::numeric)::double precision)),
+    primary key (code_protections, minimum_age, maximum_age)
+);
+
+alter table public.premium
+    owner to admin;
+

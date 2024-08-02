@@ -1,0 +1,39 @@
+{
+	"info": {
+		"_postman_id": "315305fc-5bc4-4e78-8bdf-b1283d6c3659",
+		"name": "LinkTic",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6281156"
+	},
+	"item": [
+		{
+			"name": "Settlement",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"identificationType\": \"1\",\r\n        \"identificationNumber\": \"79000001\",\r\n        \"insuredValue\": \"10000\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/settlement/calculate",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"settlement",
+						"calculate"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
